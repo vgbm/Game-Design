@@ -29,4 +29,9 @@ public class FPSInput : MonoBehaviour {
 		movement = transform.TransformDirection(movement);
 		_charController.Move(movement);
 	}
+
+	//locks the player from giving inputs
+	public void Lock() {
+		speed = 0;
+	}
 }

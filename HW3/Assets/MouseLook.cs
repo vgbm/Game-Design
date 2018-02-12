@@ -56,4 +56,10 @@ public class MouseLook : MonoBehaviour {
 			transform.localEulerAngles = new Vector3(_rotationX, rotationY, 0);
 		}
 	}
+
+	//lock the camera in position
+	public void Lock() {
+		sensitivityHor = 0;
+		sensitivityVert = 0;
+	}
 }
