@@ -15,9 +15,9 @@ public class ReactiveTarget : MonoBehaviour {
 
 	public void Update() {
 		if (isDead) {
-			this.transform.Rotate (-1, 0, 0);
+			this.transform.Rotate (90 * Time.deltaTime, 0, 0);
 
-			if (this.transform.rotation.eulerAngles.x == 90 || this.transform.rotation.eulerAngles.x == 270) {
+			if (this.transform.eulerAngles.x >= 90) {
 				//Kill the target and spawn a tombstone
 				createTombstone();
 				Destroy(this.gameObject);
