@@ -8,8 +8,9 @@ public class PlayerCharacter : MonoBehaviour {
 
 	private Vector2 guiLabelPos;
 	private Vector2 guiLabelVeloc;
-	private const int guiLabelWidth = 100;
-	private const int guiLabelHeight = 50;
+	private const int guiLabelWidth = 125;
+	private const int guiLabelHeight = 40;
+	private GUIStyle labelStyle;
 
 	void Start() {
 		_health = 5;
@@ -17,6 +18,10 @@ public class PlayerCharacter : MonoBehaviour {
 		_isDead = false;
 		guiLabelPos = new Vector2 (6 * Screen.width / 7, 10);
 		guiLabelVeloc = new Vector2 (-2, 1);
+
+		labelStyle = new GUIStyle ();
+		labelStyle.fontSize = 20;
+		labelStyle.normal.textColor = Color.black;
 	}
 
 	public void Hurt(int damage) {
@@ -30,21 +35,10 @@ public class PlayerCharacter : MonoBehaviour {
 
 	void OnGUI() {
 		if (_isDead) {
-			guiLabelPos += guiLabelVeloc;
-
-			if (guiLabelPos.x < 0 || guiLabelPos.x > Screen.width - guiLabelWidth) {
-				guiLabelVeloc.x = -guiLabelVeloc.x;
-			}
-
-			if (guiLabelPos.y < 0 || guiLabelPos.y > Screen.height - guiLabelHeight) {
-				guiLabelVeloc.y = -guiLabelVeloc.y;
-			}
-
-			guiLabelPos.x = Mathf.Clamp (guiLabelPos.x, 0, Screen.width - guiLabelWidth); 
-			guiLabelPos.y = Mathf.Clamp (guiLabelPos.y, 0, Screen.height - guiLabelHeight);
-			GUI.Label (new Rect (guiLabelPos.x, guiLabelPos.y, guiLabelWidth, guiLabelHeight), "You have died!");
+			nextGuiLabelPosition (ref guiLabelPos, ref guiLabelVeloc);
+			GUI.Label (new Rect (guiLabelPos.x, guiLabelPos.y, guiLabelWidth, guiLabelHeight), "You have died!", labelStyle);
 		} else {
-			GUI.Label (new Rect (6 * Screen.width / 7, 10, guiLabelWidth, guiLabelHeight), "Health: " + _healthStr);
+			GUI.Label (new Rect (6 * Screen.width / 7, 10, guiLabelWidth, guiLabelHeight), "Health: " + _healthStr, labelStyle);
 		}
 	}
 
@@ -70,5 +64,20 @@ public class PlayerCharacter : MonoBehaviour {
 		}
 
 		return repStr;
+	}
+
+	private void nextGuiLabelPosition(ref Vector2 pos, ref Vector2 veloc) {
+		pos += veloc;
+
+		if (pos.x < 0 || pos.x > Screen.width - guiLabelWidth) {
+			veloc.x = -veloc.x;
+		}
+
+		if (pos.y < 0 || pos.y > Screen.height - guiLabelHeight) {
+			veloc.y = -veloc.y;
+		}
+
+		pos.x = Mathf.Clamp (guiLabelPos.x, 0, Screen.width - guiLabelWidth); 
+		pos.y = Mathf.Clamp (guiLabelPos.y, 0, Screen.height - guiLabelHeight);
 	}
 }
