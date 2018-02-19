@@ -20,20 +20,24 @@ public class ReactiveTarget : MonoBehaviour {
 
 			if (this.transform.eulerAngles.x > 89) {
 				//Kill the target and spawn a tombstone
-				createDeathParticles();
-				createTombstone();
+				StartCoroutine (createDeathParticles());
+				createTombstone ();
 				Destroy(this.gameObject);
 			}
 		}
 	}
 		
-	private void createDeathParticles() {
+	private IEnumerator createDeathParticles() {
 		var particles = Instantiate (particlePrefab) as GameObject;
-		particles.transform.position = transform.position;
+		particles.transform.position = new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z);
+
+		yield return new WaitForSeconds (0.5f);
+
+		Destroy (particles);
 	}
 
 	private void createTombstone() {
 		var tombstone = Instantiate (tombstonePrefab) as GameObject;
-		tombstone.transform.position = transform.position;
+		tombstone.transform.position = new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z);
 	}
 }
