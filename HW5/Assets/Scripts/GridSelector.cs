@@ -9,6 +9,7 @@ public class GridSelector : MonoBehaviour {
 	private int buttonWidth;
 	private int buttonHeigth;
 	private GameObject table;
+	private bool gridSelect = false;
 
 	void Start () {
 		buttonWidth = 50;
@@ -18,28 +19,40 @@ public class GridSelector : MonoBehaviour {
 	}
 
 	void OnGUI() {
-		if (GUI.Button (new Rect (Screen.width/4, Screen.height/3, buttonWidth, buttonHeigth), "2x3")) {
-			LoadGame (2, 3);
+		if (gridSelect == false) {
+			if (GUI.Button (new Rect ((Screen.width / 4) - 20, Screen.height / 3, Screen.width / 4, Screen.height / 4), "Start")) {
+				gridSelect = true;
+			}
+
+			if (GUI.Button (new Rect ((Screen.width / 2) + 30, Screen.height / 3, Screen.width / 4, Screen.height / 4), "Quit")) {
+				Application.Quit ();
+			}
 		}
 
-		if (GUI.Button (new Rect (2*Screen.width/4, Screen.height/3, buttonWidth, buttonHeigth), "2x4")) {
-			LoadGame (2, 4);
-		}
+		else {
+			if (GUI.Button (new Rect (Screen.width/4, Screen.height/3, buttonWidth, buttonHeigth), "2x3")) {
+				LoadGame (2, 3);
+			}
 
-		if (GUI.Button (new Rect (3*Screen.width/4, Screen.height/3, buttonWidth, buttonHeigth), "2x5")) {
-			LoadGame (2, 5);
-		}
+			if (GUI.Button (new Rect (2*Screen.width/4, Screen.height/3, buttonWidth, buttonHeigth), "2x4")) {
+				LoadGame (2, 4);
+			}
 
-		if (GUI.Button (new Rect (Screen.width/4, 2*Screen.height/3, buttonWidth, buttonHeigth), "3x4")) {
-			LoadGame (3, 4);
-		}
+			if (GUI.Button (new Rect (3*Screen.width/4, Screen.height/3, buttonWidth, buttonHeigth), "2x5")) {
+				LoadGame (2, 5);
+			}
 
-		if (GUI.Button (new Rect (2*Screen.width/4, 2*Screen.height/3, buttonWidth, buttonHeigth), "4x4")) {
-			LoadGame (4, 4);
-		}
+			if (GUI.Button (new Rect (Screen.width/4, 2*Screen.height/3, buttonWidth, buttonHeigth), "3x4")) {
+				LoadGame (3, 4);
+			}
 
-		if (GUI.Button (new Rect (3*Screen.width/4, 2*Screen.height/3, buttonWidth, buttonHeigth), "4x5")) {
-			LoadGame (4, 5);
+			if (GUI.Button (new Rect (2*Screen.width/4, 2*Screen.height/3, buttonWidth, buttonHeigth), "4x4")) {
+				LoadGame (4, 4);
+			}
+
+			if (GUI.Button (new Rect (3*Screen.width/4, 2*Screen.height/3, buttonWidth, buttonHeigth), "4x5")) {
+				LoadGame (4, 5);
+			}
 		}
 	}
 

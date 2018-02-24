@@ -12,6 +12,7 @@ public class SceneController : MonoBehaviour {
 	private MemoryCard _firstRevealed;
 	private MemoryCard _secondRevealed;
 	private int _score = 0;
+	private bool won = false;
 
 	public bool canReveal {
 		get {return _secondRevealed == null;}
@@ -19,37 +20,16 @@ public class SceneController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start() {
-		Vector3 startPos = originalCard.transform.position;
-
 		// create shuffled list of cards
 		int[] numbers = BuildCardIdArray();
 		numbers = ShuffleArray(numbers);
 
-		// place cards in a grid
-		for (int i = 0; i < BoardInfo.numCols; i++) {
-			for (int j = 0; j < BoardInfo.numRows; j++) {
-				MemoryCard card;
+		PlaceCards(numbers);
+	}
 
-				// use the original for the first grid space
-				if (i == 0 && j == 0) {
-					card = originalCard;
-				} else {
-					card = Instantiate(originalCard) as MemoryCard;
-				}
-
-				// next card in the list for each grid space
-				int index = j * BoardInfo.numCols + i;
-				int id = numbers[index];
-
-				//TODO set images to proper value
-				//card.SetCard(id, images[id]);
-				card.SetCard(id, images[0]);
-
-				float posX = (BoardInfo.offsetX * i) + startPos.x;
-				float posY = -(BoardInfo.offsetY * j) + startPos.y;
-				card.transform.position = new Vector3(posX, posY, startPos.z);
-				card.transform.localScale = new Vector3(BoardInfo.scaleX, BoardInfo.scaleY, 1f);
-			}
+	void OnGUI() {
+		if (won) {
+			GUI.Label (new Rect (200, 200, 300, 300), "YOU WIN");
 		}
 	}
 
@@ -90,6 +70,10 @@ public class SceneController : MonoBehaviour {
 		if (_firstRevealed.id == _secondRevealed.id) {
 			_score++;
 			scoreLabel.text = "Score: " + _score;
+
+			if (_score == (BoardInfo.numRows * BoardInfo.numCols) / 2) {
+				StartCoroutine(WinScreen());
+			}
 		}
 
 		// otherwise turn them back over after .5s pause
@@ -104,7 +88,44 @@ public class SceneController : MonoBehaviour {
 		_secondRevealed = null;
 	}
 
+	private void PlaceCards(int[] numbers) {
+		Vector3 startPos = originalCard.transform.position;
+
+		for (int i = 0; i < BoardInfo.numCols; i++) {
+			for (int j = 0; j < BoardInfo.numRows; j++) {
+				MemoryCard card;
+
+				// use the original for the first grid space
+				if (i == 0 && j == 0) {
+					card = originalCard;
+				} else {
+					card = Instantiate(originalCard) as MemoryCard;
+				}
+
+				// next card in the list for each grid space
+				int index = j * BoardInfo.numCols + i;
+				int id = numbers[index];
+
+				//TODO set images to proper value
+				//id is 0-len/2
+				card.SetCard(id, images[id]);
+				//card.SetCard(id, images[0]);
+
+				float posX = (BoardInfo.offsetX * i) + startPos.x;
+				float posY = -(BoardInfo.offsetY * j) + startPos.y;
+				card.transform.position = new Vector3(posX, posY, startPos.z);
+				card.transform.localScale = new Vector3(BoardInfo.scaleFactor, BoardInfo.scaleFactor, 1f);
+			}
+		}
+	}
+
 	public void Restart() {
 		SceneManager.LoadScene("Menu");
+	}
+
+	private IEnumerator WinScreen() {
+		won = true;
+		yield return new WaitForSeconds(3.0f);
+		Restart();
 	}
 }
