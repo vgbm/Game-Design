@@ -6,9 +6,11 @@ public class SceneController : MonoBehaviour {
 	//https://forum.unity.com/threads/send-message-to-other-scene.41224/
 
 	[SerializeField] private MemoryCard originalCard;
+	[SerializeField] private GameObject victoryImage;
 	[SerializeField] private Sprite[] images;
 	[SerializeField] private TextMesh scoreLabel;
-	
+	private GUIStyle victoryMessageStyle;
+
 	private MemoryCard _firstRevealed;
 	private MemoryCard _secondRevealed;
 	private int _score = 0;
@@ -24,12 +26,19 @@ public class SceneController : MonoBehaviour {
 		int[] numbers = BuildCardIdArray();
 		numbers = ShuffleArray(numbers);
 
+		// use different sprites per game
+		images = ShuffleSprites (images);
+
 		PlaceCards(numbers);
+
+		victoryMessageStyle = new GUIStyle ();
+		victoryMessageStyle.fontSize = 80;
+		victoryMessageStyle.normal.textColor = Color.black;
 	}
 
 	void OnGUI() {
 		if (won) {
-			GUI.Label (new Rect (200, 200, 300, 300), "YOU WIN");
+			GUI.Label (new Rect (Screen.width / 3, Screen.height / 3, 400, 400), "YOU WIN", victoryMessageStyle);
 		}
 	}
 
@@ -48,6 +57,17 @@ public class SceneController : MonoBehaviour {
 		int[] newArray = numbers.Clone() as int[];
 		for (int i = 0; i < newArray.Length; i++ ) {
 			int tmp = newArray[i];
+			int r = Random.Range(i, newArray.Length);
+			newArray[i] = newArray[r];
+			newArray[r] = tmp;
+		}
+		return newArray;
+	}
+
+	private Sprite[] ShuffleSprites(Sprite[] numbers) {
+		Sprite[] newArray = numbers.Clone() as Sprite[];
+		for (int i = 0; i < newArray.Length; i++ ) {
+			Sprite tmp = newArray[i];
 			int r = Random.Range(i, newArray.Length);
 			newArray[i] = newArray[r];
 			newArray[r] = tmp;
@@ -122,6 +142,8 @@ public class SceneController : MonoBehaviour {
 
 	private IEnumerator WinScreen() {
 		won = true;
+		Instantiate (victoryImage);
+
 		yield return new WaitForSeconds(3.0f);
 		Restart();
 	}
