@@ -106,10 +106,7 @@ public class SceneController : MonoBehaviour {
 				int index = j * BoardInfo.numCols + i;
 				int id = numbers[index];
 
-				//TODO set images to proper value
-				//id is 0-len/2
 				card.SetCard(id, images[id]);
-				//card.SetCard(id, images[0]);
 
 				float posX = (BoardInfo.offsetX * i) + startPos.x;
 				float posY = -(BoardInfo.offsetY * j) + startPos.y;

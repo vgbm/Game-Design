@@ -26,6 +26,6 @@ public class BoardInfo : MonoBehaviour {
 	public void SetCols(int cols) {
 		numCols = cols;
 		scaleFactor = 2.0f / Mathf.Max (numCols, numRows);;
-		offsetX = 8f / (float)cols;
+		offsetX = 10f / (float)cols;
 	}
 }
