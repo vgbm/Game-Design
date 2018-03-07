@@ -4,7 +4,6 @@ using System.Collections;
 
 public class EndGamePopup : MonoBehaviour {
 
-
 	public void Open() {
 		gameObject.SetActive(true);
 	}
@@ -14,7 +13,7 @@ public class EndGamePopup : MonoBehaviour {
 	}
 
 	public void Play() {
-		var controller = GameObject.Find ("controller");
+		var controller = GameObject.Find ("Controller");
 		controller.SendMessage ("SpawnAllEnemies");
 		Close ();
 	}

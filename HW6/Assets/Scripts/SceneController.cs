@@ -12,13 +12,12 @@ public class SceneController : MonoBehaviour {
 		SpawnAllEnemies ();
 	}
 
-	void Update() {
-		if (enemiesRemaining == 0)
-			endGamePopup.Open();
-	}
-
 	public void DecreaseEnemyCount() {
 		enemiesRemaining--;
+
+		if (enemiesRemaining == 0) {
+			endGamePopup.Open ();
+		}
 	}
 
 	private void SpawnAllEnemies() {
@@ -27,22 +26,22 @@ public class SceneController : MonoBehaviour {
 
 		// spawn zombies in main arena area
 		for (int i = 0; i < enemiesToSpawn / 4; i++) {
-			SpawnEnemy (-10, 10, -15, 15);
+			SpawnEnemy (-9, 9, -14, 14);
 		}
 
 		// spawn zombies in far end
 		for (int i = 0; i < enemiesToSpawn / 4; i++) {
-			SpawnEnemy (-20, 20, -18, -24);
+			SpawnEnemy (-18, 18, -19, -23);
 		}
 
 		// spawn zombies on left 
 		for (int i = 0; i < enemiesToSpawn / 4; i++) {
-			SpawnEnemy (12, 24, -15, 15);
+			SpawnEnemy (14, 22, -12, 12);
 		}
 
 		// spawn zombies on right
 		for (int i = 0; i < enemiesToSpawn / 4; i++) {
-			SpawnEnemy (-12, -24, -15, 15);
+			SpawnEnemy (-14, -22, -12, 12);
 		}
 	}
 
